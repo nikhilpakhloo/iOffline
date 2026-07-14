@@ -4,6 +4,8 @@ import { runMigrations } from './migrations';
 // Export Repositories
 export { userRepository } from './repositories/UserRepository';
 export { BaseRepository } from './repositories/BaseRepository';
+export { cardRepository } from './repositories/CardRepository';
+export { highScoreRepository } from './repositories/HighScoreRepository';
 
 // Export Types
 export * from './types';
@@ -18,6 +20,10 @@ export const initDB = async () => {
 
         // 2. Run schema migrations
         await runMigrations();
+        
+        // 3. Seed initial game data if needed
+        const { cardRepository } = require('./repositories/CardRepository');
+        await cardRepository.seedCardsIfEmpty();
 
         console.log('Database initialization completed successfully');
     } catch (error) {

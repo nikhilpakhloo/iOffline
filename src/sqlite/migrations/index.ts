@@ -46,7 +46,10 @@ export const runMigrations = async () => {
         const script = migrationScripts[i];
         
         console.log(`Applying migration v${versionNum}...`);
-        tx.execute(script); // Execute script synchronously inside the async transaction
+        const statements = script.split(';').map(s => s.trim()).filter(s => s.length > 0);
+        for (const statement of statements) {
+          tx.execute(statement);
+        }
       }
     });
 

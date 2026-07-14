@@ -15,4 +15,41 @@ export const migrationScripts: string[] = [
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `,
+  // Version 2 (TechReighs Game Tables)
+  `
+    CREATE TABLE IF NOT EXISTS Cards (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      character_name TEXT NOT NULL,
+      description TEXT NOT NULL,
+      
+      -- Effects for Swiping Right (Yes/Approve)
+      effect_cash_yes INTEGER NOT NULL,
+      effect_morale_yes INTEGER NOT NULL,
+      effect_product_yes INTEGER NOT NULL,
+      effect_pr_yes INTEGER NOT NULL,
+      
+      -- Effects for Swiping Left (No/Deny)
+      effect_cash_no INTEGER NOT NULL,
+      effect_morale_no INTEGER NOT NULL,
+      effect_product_no INTEGER NOT NULL,
+      effect_pr_no INTEGER NOT NULL,
+      
+      -- Optional conditions (e.g. "cash > 50")
+      condition TEXT DEFAULT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS HighScores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      weeks_survived INTEGER NOT NULL,
+      date DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `,
+  // Version 3 (Fix for missing HighScores table due to statement splitting issue)
+  `
+    CREATE TABLE IF NOT EXISTS HighScores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      weeks_survived INTEGER NOT NULL,
+      date DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `
 ];
