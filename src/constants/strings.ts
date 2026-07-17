@@ -1,5 +1,5 @@
 export const Strings = {
-  appName: 'NativeLens',
-  welcomeMessage: 'Welcome to NativeLens!',
+  appName: 'CEO Survival',
+  welcomeMessage: 'Welcome to CEO Survival!',
   // Add other shared strings here
 };

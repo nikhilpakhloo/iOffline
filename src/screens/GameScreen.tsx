@@ -26,6 +26,7 @@ export const GameScreen = () => {
         return;
       }
       setCurrentCard(card);
+      swipeX.value = 0;
     } catch (e) {
       console.error('Failed to fetch card', e);
     }
@@ -74,7 +75,7 @@ export const GameScreen = () => {
   const triggerGameOver = async (reason: string, finalScore: number) => {
     setGameOverReason(reason);
     setIsGameOver(true);
-    
+
     try {
       await highScoreRepository.saveScore(finalScore);
       const best = await highScoreRepository.getBestScore();
@@ -97,9 +98,9 @@ export const GameScreen = () => {
     setGameState(prev => {
       const newCash = Math.min(100, prev.cash + 40);
       const newPr = Math.max(0, prev.pr - 15);
-      
+
       const newState = { ...prev, cash: newCash, pr: newPr, hasUsedFundraise: true };
-      
+
       if (newPr <= 0) {
         triggerGameOver('Public PR is a disaster. You were cancelled after the controversial fundraising!', prev.weeksSurvived);
       }
@@ -128,24 +129,24 @@ export const GameScreen = () => {
   return (
     <SafeAreaView style={styles.container} edges={['left', 'right']}>
       <HUD gameState={gameState} swipeX={swipeX} currentCard={currentCard} />
-      
+
       <View style={styles.gameArea}>
         {currentCard ? (
-          <SwipeableCard 
-            key={gameState.weeksSurvived} 
-            card={currentCard} 
-            onSwipe={handleDecision} 
+          <SwipeableCard
+            key={gameState.weeksSurvived}
+            card={currentCard}
+            onSwipe={handleDecision}
             translateX={swipeX}
           />
         ) : (
           <Text style={{ color: Colors.textMuted }}>Loading next scenario...</Text>
         )}
       </View>
-      
+
       <View style={styles.footer}>
         <View style={styles.powerupContainer}>
-          <TouchableOpacity 
-            style={[styles.powerupButton, gameState.hasUsedFundraise && styles.powerupDisabled]} 
+          <TouchableOpacity
+            style={[styles.powerupButton, gameState.hasUsedFundraise && styles.powerupDisabled]}
             onPress={handleFundraise}
             disabled={gameState.hasUsedFundraise}
           >

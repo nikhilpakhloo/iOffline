@@ -31,7 +31,7 @@ export const SplashScreen = () => {
   return (
     <View style={styles.container}>
       <Animated.Text entering={FadeIn.duration(1000)} exiting={FadeOut} style={styles.title}>
-        Nativelens
+        CEO Survival
       </Animated.Text>
       <Animated.Text entering={FadeIn.delay(500).duration(1000)} style={styles.subtitle}>
         The Startup Simulator

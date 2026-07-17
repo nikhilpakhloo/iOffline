@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import Animated, { useAnimatedProps, useSharedValue, withSpring, SharedValue, useAnimatedStyle, interpolate } from 'react-native-reanimated';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface CircularMetricProps {
   value: number;
@@ -31,6 +32,12 @@ export const CircularMetric: React.FC<CircularMetricProps> = ({ value, color, ic
     return {
       strokeDashoffset,
     };
+  });
+
+  const animatedTextProps = useAnimatedProps(() => {
+    return {
+      text: `${Math.round(animatedValue.value)}%`,
+    } as any;
   });
 
   const dotStyle = useAnimatedStyle(() => {
@@ -89,7 +96,11 @@ export const CircularMetric: React.FC<CircularMetricProps> = ({ value, color, ic
           <Text style={styles.icon}>{icon}</Text>
         </View>
       </View>
-      <Text style={[styles.percentageText, { color }]}>{Math.round(value)}%</Text>
+      <AnimatedTextInput 
+        animatedProps={animatedTextProps} 
+        style={[styles.percentageText, { color }]} 
+        editable={false} 
+      />
       <Text style={styles.labelText}>{label}</Text>
     </View>
   );

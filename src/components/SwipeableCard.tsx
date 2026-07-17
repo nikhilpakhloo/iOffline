@@ -26,8 +26,8 @@ interface SwipeableCardProps {
 export const SwipeableCard: React.FC<SwipeableCardProps> = ({ card, onSwipe, translateX }) => {
   const translateY = useSharedValue(0);
 
-  const triggerVibration = (duration: number) => {
-    Vibration.vibrate(duration);
+  const triggerVibration = (pattern: number | number[]) => {
+    Vibration.vibrate(pattern);
   };
 
   const pan = usePanGesture({
@@ -42,12 +42,12 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({ card, onSwipe, tra
       if (translateX.value > SWIPE_THRESHOLD) {
         // Swipe Right (YES)
         translateX.value = withSpring(SCREEN_WIDTH * 1.5);
-        runOnJS(triggerVibration)(50);
+        runOnJS(triggerVibration)([0, 30, 20, 30]);
         runOnJS(onSwipe)(true);
       } else if (translateX.value < -SWIPE_THRESHOLD) {
         // Swipe Left (NO)
         translateX.value = withSpring(-SCREEN_WIDTH * 1.5);
-        runOnJS(triggerVibration)(50);
+        runOnJS(triggerVibration)([0, 30, 20, 30]);
         runOnJS(onSwipe)(false);
       } else {
         // Snap back to center
