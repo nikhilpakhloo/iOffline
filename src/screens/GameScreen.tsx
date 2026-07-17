@@ -8,9 +8,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { cardRepository, highScoreRepository } from '../sqlite';
 import { CardModel } from '../sqlite/types';
 import { SwipeableCard } from '../components/SwipeableCard';
+import { useSharedValue } from 'react-native-reanimated';
 
 export const GameScreen = () => {
   const [gameState, setGameState] = useState<GameState>(INITIAL_GAME_STATE);
+  const swipeX = useSharedValue(0);
   const [currentCard, setCurrentCard] = useState<CardModel | null>(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const [gameOverReason, setGameOverReason] = useState('');
@@ -48,6 +50,7 @@ export const GameScreen = () => {
       const clampedPr = Math.max(0, Math.min(100, newPr));
 
       const newState = {
+        ...prevState,
         cash: clampedCash,
         morale: clampedMorale,
         product: clampedProduct,
@@ -85,7 +88,23 @@ export const GameScreen = () => {
     setGameState(INITIAL_GAME_STATE);
     setIsGameOver(false);
     setGameOverReason('');
+    swipeX.value = 0;
     fetchNextCard(INITIAL_GAME_STATE.seenCardIds);
+  };
+
+  const handleFundraise = () => {
+    if (gameState.hasUsedFundraise) return;
+    setGameState(prev => {
+      const newCash = Math.min(100, prev.cash + 40);
+      const newPr = Math.max(0, prev.pr - 15);
+      
+      const newState = { ...prev, cash: newCash, pr: newPr, hasUsedFundraise: true };
+      
+      if (newPr <= 0) {
+        triggerGameOver('Public PR is a disaster. You were cancelled after the controversial fundraising!', prev.weeksSurvived);
+      }
+      return newState;
+    });
   };
 
   if (isGameOver) {
@@ -108,7 +127,7 @@ export const GameScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['left', 'right']}>
-      <HUD gameState={gameState} />
+      <HUD gameState={gameState} swipeX={swipeX} currentCard={currentCard} />
       
       <View style={styles.gameArea}>
         {currentCard ? (
@@ -116,6 +135,7 @@ export const GameScreen = () => {
             key={gameState.weeksSurvived} 
             card={currentCard} 
             onSwipe={handleDecision} 
+            translateX={swipeX}
           />
         ) : (
           <Text style={{ color: Colors.textMuted }}>Loading next scenario...</Text>
@@ -123,6 +143,17 @@ export const GameScreen = () => {
       </View>
       
       <View style={styles.footer}>
+        <View style={styles.powerupContainer}>
+          <TouchableOpacity 
+            style={[styles.powerupButton, gameState.hasUsedFundraise && styles.powerupDisabled]} 
+            onPress={handleFundraise}
+            disabled={gameState.hasUsedFundraise}
+          >
+            <Text style={styles.powerupText}>
+              {gameState.hasUsedFundraise ? 'FUNDRAISED' : '🚀 FUNDRAISE (+💰, -📰)'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.weeksLabel}>WEEKS SURVIVED</Text>
         <Text style={styles.weeksValue}>{gameState.weeksSurvived}</Text>
       </View>
@@ -145,6 +176,26 @@ const styles = StyleSheet.create({
     padding: Dimensions.spacing.xl,
     alignItems: 'center',
     paddingBottom: Dimensions.spacing.xxl,
+  },
+  powerupContainer: {
+    marginBottom: Dimensions.spacing.xl,
+  },
+  powerupButton: {
+    backgroundColor: Colors.surface,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.cash,
+  },
+  powerupDisabled: {
+    opacity: 0.5,
+    borderColor: Colors.border,
+  },
+  powerupText: {
+    color: Colors.text,
+    fontWeight: 'bold',
+    fontSize: 12,
   },
   weeksLabel: {
     fontSize: 12,

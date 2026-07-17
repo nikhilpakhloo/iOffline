@@ -42,7 +42,17 @@ export class CardRepository extends BaseRepository<CardModel> {
       { character: "HR Director", desc: "We should mandate 5-days-a-week Return to Office. Productivity is dropping.", y_cash: 5, y_morale: -35, y_prod: 15, y_pr: -10, n_cash: -5, n_morale: 25, n_prod: -10, n_pr: 5 },
       { character: "Data Scientist", desc: "We can sell our users' anonymized data to a 3rd party broker for quick revenue.", y_cash: 35, y_morale: -15, y_prod: 0, y_pr: -40, n_cash: -10, n_morale: 10, n_prod: 0, n_pr: 20 },
       { character: "Enterprise Client", desc: "We'll sign a massive contract, but you must build 5 custom features just for us.", y_cash: 40, y_morale: -20, y_prod: -25, y_pr: 10, n_cash: -20, n_morale: 10, n_prod: 15, n_pr: -5 },
-      { character: "Security Lead", desc: "We suffered a minor data breach. Do we disclose it before the press finds out?", y_cash: -15, y_morale: -10, y_prod: 0, y_pr: 15, n_cash: 0, n_morale: -5, n_prod: 0, n_pr: -50 }
+      { character: "Security Lead", desc: "We suffered a minor data breach. Do we disclose it before the press finds out?", y_cash: -15, y_morale: -10, y_prod: 0, y_pr: 15, n_cash: 0, n_morale: -5, n_prod: 0, n_pr: -50 },
+      { character: "Intern", desc: "I accidentally pushed API keys to a public GitHub repo. Can we keep it quiet?", y_cash: 0, y_morale: -10, y_prod: 0, y_pr: -20, n_cash: -20, n_morale: 0, n_prod: -10, n_pr: 5 },
+      { character: "Agile Coach", desc: "Let's replace all meetings with 4-hour 'synergy workshops'.", y_cash: -10, y_morale: -20, y_prod: -15, y_pr: 0, n_cash: 0, n_morale: 10, n_prod: 5, n_pr: 0 },
+      { character: "Tax Auditor", desc: "We found irregularities in your startup's tax returns. Settle for a massive fine?", y_cash: -40, y_morale: -5, y_prod: 0, y_pr: -10, n_cash: 0, n_morale: -15, n_prod: -5, n_pr: -25 },
+      { character: "Activist Investor", desc: "Fire your design team and use AI to generate all marketing materials. I demand it.", y_cash: 25, y_morale: -30, y_prod: -10, y_pr: -20, n_cash: -10, n_morale: 20, n_prod: 5, n_pr: 10 },
+      { character: "DevOps Engineer", desc: "Production database is down. Do I switch to the backup that's 2 days old?", y_cash: -10, y_morale: -15, y_prod: -30, y_pr: -20, n_cash: -25, n_morale: -25, n_prod: 10, n_pr: -10 },
+      { character: "Tech Blogger", desc: "Give me an exclusive scoop on your next product or I write a hit piece.", y_cash: -5, y_morale: -5, y_prod: 0, y_pr: 25, n_cash: 0, n_morale: 5, n_prod: 0, n_pr: -25 },
+      { character: "Scrum Master", desc: "Can we buy Jira Premium for $10k? It will definitely fix our productivity.", y_cash: -15, y_morale: -15, y_prod: -5, y_pr: 0, n_cash: 0, n_morale: 15, n_prod: 10, n_pr: 0 },
+      { character: "Local Mayor", desc: "Donate $50k to my campaign and I'll give your startup massive tax breaks.", y_cash: -30, y_morale: -5, y_prod: 0, y_pr: -15, n_cash: 0, n_morale: 0, n_prod: 0, n_pr: 10 },
+      { character: "Backend Developer", desc: "I want to rewrite our entire backend in Rust. It will take 6 months.", y_cash: -25, y_morale: 30, y_prod: -20, y_pr: 5, n_cash: 0, n_morale: -30, n_prod: 15, n_pr: 0 },
+      { character: "Growth Hacker", desc: "Let's scrape our competitors' user databases to send them cold emails.", y_cash: 15, y_morale: -10, y_prod: 0, y_pr: -35, n_cash: -5, n_morale: 5, n_prod: 0, n_pr: 10 }
     ];
 
     for (const card of seedData) {

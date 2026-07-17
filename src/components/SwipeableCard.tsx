@@ -7,6 +7,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  SharedValue,
 } from 'react-native-reanimated';
 import { runOnJS } from 'react-native-worklets';
 import { Colors } from '../constants/colors';
@@ -19,10 +20,10 @@ const SCREEN_WIDTH = Dimensions.window.width;
 interface SwipeableCardProps {
   card: CardModel;
   onSwipe: (isYes: boolean) => void;
+  translateX: SharedValue<number>;
 }
 
-export const SwipeableCard: React.FC<SwipeableCardProps> = ({ card, onSwipe }) => {
-  const translateX = useSharedValue(0);
+export const SwipeableCard: React.FC<SwipeableCardProps> = ({ card, onSwipe, translateX }) => {
   const translateY = useSharedValue(0);
 
   const triggerVibration = (duration: number) => {

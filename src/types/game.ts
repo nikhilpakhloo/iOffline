@@ -5,6 +5,7 @@ export interface GameState {
   pr: number;
   weeksSurvived: number;
   seenCardIds: number[];
+  hasUsedFundraise: boolean;
 }
 
 export const INITIAL_GAME_STATE: GameState = {
@@ -14,4 +15,5 @@ export const INITIAL_GAME_STATE: GameState = {
   pr: 50,
   weeksSurvived: 0,
   seenCardIds: [],
+  hasUsedFundraise: false,
 };
