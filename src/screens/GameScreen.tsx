@@ -16,9 +16,13 @@ export const GameScreen = () => {
   const [gameOverReason, setGameOverReason] = useState('');
   const [bestScore, setBestScore] = useState(0);
 
-  const fetchNextCard = async () => {
+  const fetchNextCard = async (seenIds = gameState.seenCardIds) => {
     try {
-      const card = await cardRepository.getRandomCard();
+      const card = await cardRepository.getRandomCard(seenIds);
+      if (!card) {
+        triggerGameOver('You survived all scenarios! You are a legendary CEO.', gameState.weeksSurvived);
+        return;
+      }
       setCurrentCard(card);
     } catch (e) {
       console.error('Failed to fetch card', e);
@@ -49,6 +53,7 @@ export const GameScreen = () => {
         product: clampedProduct,
         pr: clampedPr,
         weeksSurvived: prevState.weeksSurvived + 1,
+        seenCardIds: [...prevState.seenCardIds, currentCard.id],
       };
 
       if (clampedCash <= 0) triggerGameOver('You ran out of cash! The company is bankrupt.', newState.weeksSurvived);
@@ -56,7 +61,7 @@ export const GameScreen = () => {
       else if (clampedProduct <= 0) triggerGameOver('The product is completely broken. Users left.', newState.weeksSurvived);
       else if (clampedPr <= 0) triggerGameOver('Public PR is a disaster. You were cancelled!', newState.weeksSurvived);
       else {
-        fetchNextCard();
+        fetchNextCard(newState.seenCardIds);
       }
 
       return newState;
@@ -80,7 +85,7 @@ export const GameScreen = () => {
     setGameState(INITIAL_GAME_STATE);
     setIsGameOver(false);
     setGameOverReason('');
-    fetchNextCard();
+    fetchNextCard(INITIAL_GAME_STATE.seenCardIds);
   };
 
   if (isGameOver) {

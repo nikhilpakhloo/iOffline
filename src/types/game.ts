@@ -4,6 +4,7 @@ export interface GameState {
   product: number;
   pr: number;
   weeksSurvived: number;
+  seenCardIds: number[];
 }
 
 export const INITIAL_GAME_STATE: GameState = {
@@ -12,4 +13,5 @@ export const INITIAL_GAME_STATE: GameState = {
   product: 50,
   pr: 50,
   weeksSurvived: 0,
+  seenCardIds: [],
 };
